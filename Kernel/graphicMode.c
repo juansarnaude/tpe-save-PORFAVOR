@@ -74,6 +74,71 @@ void initDividedWindow(){
         drawPixel(i, center + 1,  &WHITE);
     }
 }
+void printCharFormatWithoutScroll(uint8_t c, color_t * charColor, color_t * bgColor){
+
+    // Backspace
+    if(c == '\b'){
+        if(cw[cw_id].current_j == 0){
+            cw[cw_id].current_i -= 1;
+            cw[cw_id].current_j = cw[cw_id].width-1;
+            printCharFormat(' ', charColor, bgColor);
+            cw[cw_id].current_i -= 1;
+            cw[cw_id].current_j = cw[cw_id].width-1;
+        } else {
+            cw[cw_id].current_j = (cw[cw_id].current_j-1) % cw[cw_id].width;
+            printCharFormat(' ', charColor, bgColor);
+            cw[cw_id].current_j = (cw[cw_id].current_j-1) % cw[cw_id].width;
+        }
+        return;
+    }
+
+    // Newline
+    if(c == '\n'){
+        newLine();
+        return;
+    }
+
+        uint8_t * character;
+    if(global_font == 1){
+        character = getCharMappingSmallFont(c);
+        CHAR_HEIGHT = 11;
+        CHAR_WIDTH = 8;
+        cw[0].width = graphicModeInfo->width / CHAR_WIDTH;
+        cw[0].height = graphicModeInfo->height / CHAR_HEIGHT;
+    }
+    if(global_font == 2){
+        character = getCharMappingNormalFont(c);
+        CHAR_HEIGHT = 14;
+        CHAR_WIDTH = 8;
+        cw[0].width = graphicModeInfo->width / CHAR_WIDTH;
+        cw[0].height = graphicModeInfo->height / CHAR_HEIGHT;
+    }
+    if(global_font == 3){
+        character = getCharMappingBigFont(c);
+        CHAR_HEIGHT = 16;
+        CHAR_WIDTH = 9;
+        cw[0].width = graphicModeInfo->width / CHAR_WIDTH;
+        cw[0].height = graphicModeInfo->height / CHAR_HEIGHT;
+    }
+    // Upper left pixel of the current character
+    uint16_t write_i = (cw[cw_id].start_i + cw[cw_id].current_i) * CHAR_HEIGHT;
+    uint16_t write_j = (cw[cw_id].start_j + cw[cw_id].current_j) * CHAR_WIDTH;
+
+    uint8_t mask;
+
+    for(int i=0; i < CHAR_HEIGHT; ++i){
+        for(int j=0; j < CHAR_WIDTH; ++j){
+            mask = 1 << (CHAR_WIDTH - j - 1);
+            if(character[i] & mask){
+                drawPixel(write_i + i, write_j + j, charColor);
+            }
+            else{
+                drawPixel(write_i + i, write_j + j, bgColor);
+            }
+        }
+    }
+    getNextPosition();
+}
 
 void printCharFormat(uint8_t c, color_t * charColor, color_t * bgColor){
    
@@ -268,4 +333,11 @@ void printRegisterFormat(uint64_t reg){
     if(reg){
        printHex(reg);
     }
+}
+
+c=' ';
+void paintPixel(int direction, uint32_t position){
+    cw[cw_id].current_i = position / cw[cw_id].width;
+    cw[cw_id].current_j = position % cw[cw_id].width;
+    printCharFormatWithoutScroll(c , &BLACK , &RED );
 }

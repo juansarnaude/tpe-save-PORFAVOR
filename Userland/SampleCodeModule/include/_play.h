@@ -25,9 +25,8 @@ typedef int color;
 #define YELLOW 0xE
 #define WHITE 0xF
 
-#define WIDTH 80
-#define HEIGHT 25
-
+#define WIDTH 128
+#define HEIGHT 54
 #define AREA WIDTH*HEIGHT
 
 void play(unsigned int fd);

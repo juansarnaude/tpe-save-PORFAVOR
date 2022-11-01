@@ -77,5 +77,6 @@ void restartCursor();
 void setScreen(uint8_t screen_id);
 void clearAll();
 void newLine();
-
+void paintPixel(int direction, uint32_t position);
+void printCharFormatWithoutScroll(uint8_t c, color_t * charColor, color_t * bgColor);
 #endif /* _GRAPHICMODE_H_ */

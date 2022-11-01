@@ -88,8 +88,8 @@ int sys_printmem(uint64_t * mem_address){
 }
 
 
-void sys_paint(unsigned int fd, int direction, uint8_t* position){
-  ncPaint(direction, position);
+void sys_paint(unsigned int fd, int direction, uint32_t position){
+    ncPaint(direction, position);
 }
 
 
@@ -192,7 +192,7 @@ int sysCallDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r10, ui
         sys_infoReg();
         return 0;
       case 12:
-        sys_paint((unsigned int) rdi, (int) rsi, (uint8_t*) rdx);
+        sys_paint((unsigned int) rdi, (int) rsi, (uint32_t) rdx);
         return 0;
       case 13:
         return sys_seconds_elapsed();

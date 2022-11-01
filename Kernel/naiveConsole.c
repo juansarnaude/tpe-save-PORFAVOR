@@ -122,22 +122,5 @@ static uint32_t uintToBase(uint64_t value, char * buffer, uint32_t base){
 }
 
 void ncPaint(int direction, uint8_t* position){
-	color background=L_MAGENTA;
-	color foreground=L_MAGENTA;
-		if(direction == RIGHT){
-		*(position) = '-';
-		*(position + 1) = ( 0x00 | background ) << 4 | foreground;
-	}
-	else if(direction == LEFT){
-		*(position) = '-';
-		*(position + 1) = ( 0x00 | background ) << 4 | foreground;
-	}
-	else if(direction == UP){
-		*(position) = '|';
-		*(position + 1) = ( 0x00 | background ) << 4 | foreground;
-	}
-	else if(direction == DOWN){
-		*(position) = '|';
-		*(position + 1) = ( 0x00 | background ) << 4 | foreground;
-	}
+    paintPixel(direction,position);
 }
