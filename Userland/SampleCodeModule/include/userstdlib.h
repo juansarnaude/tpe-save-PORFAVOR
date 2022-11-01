@@ -42,7 +42,6 @@ void clearScreen();
 void restartCursor();
 void divideWindow();
 void uniqueWindow();
-void setScreen(uint8_t id);
 void infoReg();
 void paint(color_t color, uint32_t position);
 void setFont(int fontNumber);

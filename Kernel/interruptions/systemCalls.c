@@ -59,13 +59,7 @@ void sys_restartCursor(){
     restartCursor();
 }
 
-void sys_setScreen(uint8_t id){
-    setScreen(id);
-}
 
-void sys_divide(){
-    initDividedWindow();
-}
 
 void sys_uniqueWindow(){
     initUniqueWindow();
@@ -169,20 +163,12 @@ int sysCallDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r10, ui
         sys_restartCursor();
         return 0;
 
-      case 6:
-        sys_divide();
-        return 0;
-
       case 7:
         sys_uniqueWindow();
         return 0;
 
       case 8:
         return sys_printmem((uint64_t *) rdi);
-
-      case 9:
-        sys_setScreen(rdi);
-        return 0;
 
       case 10:
         sys_date((char *)rdi);

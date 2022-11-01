@@ -65,9 +65,7 @@ void printRegisterFormat(uint64_t reg);
 uint32_t uintToBase(uint64_t value, char * buffer, uint32_t base);
 
 void initUniqueWindow();
-void initDividedWindow();
 void restartCursor();
-void setScreen(uint8_t screen_id);
 void clearAll();
 void newLine();
 void paintPixel(color_t color, uint32_t position);

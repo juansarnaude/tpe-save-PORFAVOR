@@ -4,10 +4,8 @@ GLOBAL sys_time
 GLOBAL sys_tick
 GLOBAL sys_clear
 GLOBAL sys_restartCursor
-GLOBAL sys_divide
 GLOBAL sys_uniqueWindow
 GLOBAL invalidOp
-GLOBAL sys_setScreen
 GLOBAL sys_date
 GLOBAL inforeg
 EXTERN my_printf 
@@ -108,15 +106,6 @@ sys_restartCursor:
     pop rbp
     ret
 
-sys_divide:
-  push rbp
-  mov rbp, rsp
-  mov r8, 6
-  int 80h
-  mov rsp, rbp
-  pop rbp
-  ret
-
 sys_uniqueWindow:
   push rbp
   mov rbp, rsp
@@ -126,14 +115,6 @@ sys_uniqueWindow:
   pop rbp
   ret
 
-sys_setScreen:
-  push rbp
-  mov rbp, rsp
-  mov r8, 9
-  int 80h
-  mov rsp, rbp
-  pop rbp
-  ret
 
 sys_date:
   push rbp

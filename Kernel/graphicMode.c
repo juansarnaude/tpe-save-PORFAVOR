@@ -4,9 +4,8 @@
 #include <bigFont.h>
 
 // cw = current window
-window cw[4];
+window cw;
 
-uint8_t cw_id = 0;              // current screen
 color_t * font_color = &WHITE;  // default font_color
 color_t * bg_color = &BLACK;    // default bg_color
 
@@ -33,61 +32,29 @@ static void drawPixel(int i, int j, color_t * color){
 
 // Default window
 void initUniqueWindow(){
-    cw_id = 0;
-    cw[0].current_i = 0;
-    cw[0].current_j = 0;
-    cw[0].start_i = 0;
-    cw[0].start_j = 0;
-    cw[0].width = graphicModeInfo->width / CHAR_WIDTH;
-    cw[0].height = graphicModeInfo->height / CHAR_HEIGHT;
+    cw.current_i = 0;
+    cw.current_j = 0;
+    cw.start_i = 0;
+    cw.start_j = 0;
+    cw.width = graphicModeInfo->width / CHAR_WIDTH;
+    cw.height = graphicModeInfo->height / CHAR_HEIGHT;
     clearAll();
 }
 
-// Multiple window
-void initDividedWindow(){
-    cw_id = 0;
-    clearAll();
-    for(int i=0; i < 4 ; ++i){
-        cw[i].current_i = 0;
-        cw[i].current_j = 0;
-        cw[i].width = (graphicModeInfo->width / (CHAR_WIDTH * 2)) - 1;
-        cw[i].height = (graphicModeInfo->height / (CHAR_HEIGHT * 2)) - 1;
-    }
-    cw[0].start_i = 0;
-    cw[0].start_j = 0;
-    cw[1].start_i = 0;
-    cw[1].start_j = graphicModeInfo->width / (CHAR_WIDTH * 2) + 1;
-    cw[2].start_i = graphicModeInfo->height / (CHAR_HEIGHT * 2) + 1;
-    cw[2].start_j = 0;
-    cw[3].start_i = graphicModeInfo->height / (CHAR_HEIGHT * 2) +1;
-    cw[3].start_j = graphicModeInfo->width / (CHAR_WIDTH * 2) + 1;
-
-    int center = graphicModeInfo->height / 2;
-    for(int i=0; i < graphicModeInfo->width; ++i){
-        drawPixel(center, i, &WHITE);
-        drawPixel(center + 1, i,  &WHITE);
-    }
-
-    center = graphicModeInfo->width/ 2;
-    for(int i = 0 ; i<graphicModeInfo->height; ++i){
-        drawPixel(i, center,  &WHITE);
-        drawPixel(i, center + 1,  &WHITE);
-    }
-}
 void printCharFormatWithoutScroll(uint8_t c, color_t * charColor, color_t * bgColor){
 
     // Backspace
     if(c == '\b'){
-        if(cw[cw_id].current_j == 0){
-            cw[cw_id].current_i -= 1;
-            cw[cw_id].current_j = cw[cw_id].width-1;
+        if(cw.current_j == 0){
+            cw.current_i -= 1;
+            cw.current_j = cw.width-1;
             printCharFormatWithoutScroll(c, charColor, bgColor);
-            cw[cw_id].current_i -= 1;
-            cw[cw_id].current_j = cw[cw_id].width-1;
+            cw.current_i -= 1;
+            cw.current_j = cw.width-1;
         } else {
-            cw[cw_id].current_j = (cw[cw_id].current_j-1) % cw[cw_id].width;
+            cw.current_j = (cw.current_j-1) % cw.width;
             printCharFormatWithoutScroll(c, charColor, bgColor);
-            cw[cw_id].current_j = (cw[cw_id].current_j-1) % cw[cw_id].width;
+            cw.current_j = (cw.current_j-1) % cw.width;
         }
         return;
     }
@@ -103,26 +70,26 @@ void printCharFormatWithoutScroll(uint8_t c, color_t * charColor, color_t * bgCo
         character = getCharMappingSmallFont(c);
         CHAR_HEIGHT = 11;
         CHAR_WIDTH = 8;
-        cw[0].width = graphicModeInfo->width / CHAR_WIDTH;
-        cw[0].height = graphicModeInfo->height / CHAR_HEIGHT;
+        cw.width = graphicModeInfo->width / CHAR_WIDTH;
+        cw.height = graphicModeInfo->height / CHAR_HEIGHT;
     }
     if(global_font == 2){
         character = getCharMappingNormalFont(c);
         CHAR_HEIGHT = 14;
         CHAR_WIDTH = 8;
-        cw[0].width = graphicModeInfo->width / CHAR_WIDTH;
-        cw[0].height = graphicModeInfo->height / CHAR_HEIGHT;
+        cw.width = graphicModeInfo->width / CHAR_WIDTH;
+        cw.height = graphicModeInfo->height / CHAR_HEIGHT;
     }
     if(global_font == 3){
         character = getCharMappingBigFont(c);
         CHAR_HEIGHT = 16;
         CHAR_WIDTH = 9;
-        cw[0].width = graphicModeInfo->width / CHAR_WIDTH;
-        cw[0].height = graphicModeInfo->height / CHAR_HEIGHT;
+        cw.width = graphicModeInfo->width / CHAR_WIDTH;
+        cw.height = graphicModeInfo->height / CHAR_HEIGHT;
     }
     // Upper left pixel of the current character
-    uint16_t write_i = (cw[cw_id].start_i + cw[cw_id].current_i) * CHAR_HEIGHT;
-    uint16_t write_j = (cw[cw_id].start_j + cw[cw_id].current_j) * CHAR_WIDTH;
+    uint16_t write_i = (cw.start_i + cw.current_i) * CHAR_HEIGHT;
+    uint16_t write_j = (cw.start_j + cw.current_j) * CHAR_WIDTH;
 
     uint8_t mask;
 
@@ -144,16 +111,16 @@ void printCharFormat(uint8_t c, color_t * charColor, color_t * bgColor){
    
     // Backspace
     if(c == '\b'){
-      if(cw[cw_id].current_j == 0){        
-          cw[cw_id].current_i -= 1;                               
-          cw[cw_id].current_j = cw[cw_id].width-1;
+      if(cw.current_j == 0){
+          cw.current_i -= 1;
+          cw.current_j = cw.width-1;
           printCharFormat(' ', charColor, bgColor);
-          cw[cw_id].current_i -= 1;
-          cw[cw_id].current_j = cw[cw_id].width-1;  
+          cw.current_i -= 1;
+          cw.current_j = cw.width-1;
       } else {
-        cw[cw_id].current_j = (cw[cw_id].current_j-1) % cw[cw_id].width;
+        cw.current_j = (cw.current_j-1) % cw.width;
         printCharFormat(' ', charColor, bgColor);
-        cw[cw_id].current_j = (cw[cw_id].current_j-1) % cw[cw_id].width;  
+        cw.current_j = (cw.current_j-1) % cw.width;
       }
       return;
   }
@@ -170,26 +137,26 @@ void printCharFormat(uint8_t c, color_t * charColor, color_t * bgColor){
         character = getCharMappingSmallFont(c);
         CHAR_HEIGHT = 11;
         CHAR_WIDTH = 8;
-        cw[0].width = graphicModeInfo->width / CHAR_WIDTH;
-        cw[0].height = graphicModeInfo->height / CHAR_HEIGHT;
+        cw.width = graphicModeInfo->width / CHAR_WIDTH;
+        cw.height = graphicModeInfo->height / CHAR_HEIGHT;
     }
     if(global_font == 2){
         character = getCharMappingNormalFont(c);
         CHAR_HEIGHT = 14;
         CHAR_WIDTH = 8;
-        cw[0].width = graphicModeInfo->width / CHAR_WIDTH;
-        cw[0].height = graphicModeInfo->height / CHAR_HEIGHT;
+        cw.width = graphicModeInfo->width / CHAR_WIDTH;
+        cw.height = graphicModeInfo->height / CHAR_HEIGHT;
     }
     if(global_font == 3){
         character = getCharMappingBigFont(c);
         CHAR_HEIGHT = 16;
         CHAR_WIDTH = 9;
-        cw[0].width = graphicModeInfo->width / CHAR_WIDTH;
-        cw[0].height = graphicModeInfo->height / CHAR_HEIGHT;
+        cw.width = graphicModeInfo->width / CHAR_WIDTH;
+        cw.height = graphicModeInfo->height / CHAR_HEIGHT;
     }
     // Upper left pixel of the current character
-    uint16_t write_i = (cw[cw_id].start_i + cw[cw_id].current_i) * CHAR_HEIGHT;
-    uint16_t write_j = (cw[cw_id].start_j + cw[cw_id].current_j) * CHAR_WIDTH;
+    uint16_t write_i = (cw.start_i + cw.current_i) * CHAR_HEIGHT;
+    uint16_t write_j = (cw.start_j + cw.current_j) * CHAR_WIDTH;
 
     uint8_t mask;
 
@@ -208,36 +175,33 @@ void printCharFormat(uint8_t c, color_t * charColor, color_t * bgColor){
 }
 
 static void getNextPosition(){
-    cw[cw_id].current_i += ((cw[cw_id].current_j + 1) == cw[cw_id].width ) ? 1:0;
-    cw[cw_id].current_j = (cw[cw_id].current_j + 1) % cw[cw_id].width;
+    cw.current_i += ((cw.current_j + 1) == cw.width ) ? 1:0;
+    cw.current_j = (cw.current_j + 1) % cw.width;
 }
 
 static void checkSpace(){
-    if(cw[cw_id].current_i == cw[cw_id].height){
+    if(cw.current_i == cw.height){
         scrollUp();
     }
 }
 
 static void scrollUp(){
-    for(int i=1; i < cw[cw_id].height * CHAR_HEIGHT; ++i){
+    for(int i=1; i < cw.height * CHAR_HEIGHT; ++i){
 
-        uint8_t * start = getPixelAddress(cw[cw_id].start_i + i, cw[cw_id].start_j);
-        uint8_t * next = getPixelAddress(cw[cw_id].start_i + CHAR_HEIGHT + i, cw[cw_id].start_j);
+        uint8_t * start = getPixelAddress(cw.start_i + i, cw.start_j);
+        uint8_t * next = getPixelAddress(cw.start_i + CHAR_HEIGHT + i, cw.start_j);
 
-        for(int j=0; j < cw[cw_id].width * CHAR_WIDTH * 3 ; ++j){
+        for(int j=0; j < cw.width * CHAR_WIDTH * 3 ; ++j){
             start[j] = next[j];
         }
     }
-    cw[cw_id].current_i -= 1;
+    cw.current_i -= 1;
 }
 
 void printChar(uint8_t c){
     printCharFormat(c, &WHITE, &BLACK);
 }
 
-void setScreen(uint8_t screen_id){
-    cw_id = screen_id;
-}
 
 void print(const char * string){
     for (int i=0; string[i] != 0; ++i){
@@ -246,25 +210,25 @@ void print(const char * string){
 }
 
 void newLine(){
-    cw[cw_id].current_j = 0;
-    cw[cw_id].current_i += 1;
+    cw.current_j = 0;
+    cw.current_i += 1;
 }
 
 void restartCursor(){
-    cw[cw_id].current_i = 0;
-    cw[cw_id].current_j = 0;
+    cw.current_i = 0;
+    cw.current_j = 0;
 }
 
 void clearAll(){
-    cw[cw_id].current_i = 0;
-    cw[cw_id].current_j = 0;
-    for(int i=0; i < (cw[cw_id].height) ; ++i ){
-        for(int j=0; j < (cw[cw_id].width) ; ++j){
+    cw.current_i = 0;
+    cw.current_j = 0;
+    for(int i=0; i < (cw.height) ; ++i ){
+        for(int j=0; j < (cw.width) ; ++j){
             printCharFormat(' ', &WHITE, &BLACK);
         }
     }
-    cw[cw_id].current_i = 0;
-    cw[cw_id].current_j = 0;
+    cw.current_i = 0;
+    cw.current_j = 0;
 }
 
 
@@ -338,7 +302,7 @@ void printRegisterFormat(uint64_t reg){
 
 void paintPixel(color_t color, uint32_t position){
     char c=' ';
-    cw[cw_id].current_i = position / cw[cw_id].width;
-    cw[cw_id].current_j = position % cw[cw_id].width;
+    cw.current_i = position / cw.width;
+    cw.current_j = position % cw.width;
     printCharFormatWithoutScroll(c , &BLACK , &color );
 }
