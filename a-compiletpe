@@ -11,7 +11,7 @@ printf "\033[0;36m############################### END COMPILE ##################
 
 if [ $# -eq 1 ] && [ $1 == "run" ]
 then
-	cd /mnt/e/Estudiar/Programacion/Arqui/Kernel-Pure64
+	cd /mnt/e/Estudiar/Programacion/Arqui/tpe
 	sudo ./run.sh
 elif [ $# -eq 2 ] && [ $1 == "run" ] && [ $2 == "gdb" ]
 then

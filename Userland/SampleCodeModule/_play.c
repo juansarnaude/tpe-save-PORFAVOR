@@ -49,8 +49,7 @@ void play(unsigned int fd){
             endGame();
             flag=0;
         }
-        my_printf("hola");
-        sleepMiliseconds(1);
+      sleepMiliseconds(50);
     }
 }
 
@@ -78,7 +77,6 @@ int endGame(){
     lastLetter2 = 'j';
     crash = 0;
     collisionState1= 0;
-    sleepMiliseconds(1000);
 }
 
 int drawMovement(char c, int player){

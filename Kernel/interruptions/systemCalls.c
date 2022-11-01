@@ -189,11 +189,10 @@ int sysCallDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r10, ui
         sys_paint((unsigned int) rdi, (int) rsi, (uint8_t*) rdx);
         return 0;
       case 13:
-        sys_seconds_elapsed();
-        return 0;
+        return sys_seconds_elapsed();
       case 14:
-        sys_miliseconds_elapsed();
-        return 0;
+        return sys_miliseconds_elapsed();
+
   }
   return -1;
 }

@@ -217,7 +217,8 @@ int miliseconds_elapsed(){
 
 void sleepMiliseconds(int miliseconds){
     int miliseconds_e = miliseconds_elapsed();
-    for (int i = miliseconds_elapsed(); i < (miliseconds_e + miliseconds); i = miliseconds_elapsed());
+    for (int i = miliseconds_elapsed(); i < miliseconds + miliseconds_e ; i = miliseconds_elapsed());
+    
 }
 
 void sleep(int seconds){

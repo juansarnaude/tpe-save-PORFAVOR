@@ -1,7 +1,6 @@
 #include <time.h>
 
 static unsigned long ticks = 0;
-static int printed = 0;
 
 void timer_handler() {
 	ticks++;
@@ -16,5 +15,5 @@ int seconds_elapsed() {
 }
 
 int miliseconds_elapsed() {
-	return (ticks*1000) / 18;
+	return (ticks*1000)/18;
 }

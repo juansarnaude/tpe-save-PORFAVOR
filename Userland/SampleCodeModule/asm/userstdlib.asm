@@ -15,8 +15,8 @@ GLOBAL sys_printmem
 GLOBAL divideByZero
 GLOBAL sys_infoReg
 GLOBAL sys_paint
-GLOBAL sys_seconds_elapsed:
-GLOBAL sys_miliseconds_elapsed:
+GLOBAL sys_seconds_elapsed
+GLOBAL sys_miliseconds_elapsed
 
 %macro pushState 0
 	push rbx
@@ -160,6 +160,7 @@ sys_paint:
     mov rsp, rbp
     pop rbp
     ret
+
 sys_seconds_elapsed:
     push rbp
     mov rbp, rsp
@@ -168,6 +169,7 @@ sys_seconds_elapsed:
     mov rsp, rbp
     pop rbp
     ret
+
 sys_miliseconds_elapsed:
     push rbp
     mov rbp, rsp
@@ -176,6 +178,7 @@ sys_miliseconds_elapsed:
     mov rsp, rbp
     pop rbp
     ret
+
 ; Retrivied from https://mudongliang.github.io/x86/html/file_module_x86_id_318.html
 invalidOp:
     push rbp
