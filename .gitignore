@@ -1,0 +1,21 @@
+#Binary Files
+*.bin
+*.sys
+#The images
+*.img
+*.qcow2
+*.vmdk
+
+#Object files
+*.o
+
+#ELF
+*.elf
+
+#VS Code
+.vscode
+
+#History
+.bash_history
+.gdb_history
+.gdbinit
