@@ -17,6 +17,7 @@ GLOBAL sys_infoReg
 GLOBAL sys_paint
 GLOBAL sys_seconds_elapsed
 GLOBAL sys_miliseconds_elapsed
+GLOBAL sys_set_font
 
 %macro pushState 0
 	push rbx
@@ -175,6 +176,17 @@ sys_miliseconds_elapsed:
     mov rbp, rsp
     mov r8, 14
     int 80h
+    mov rsp, rbp
+    pop rbp
+    ret
+
+sys_set_font:
+    push rbp
+    mov rbp, rsp
+
+    mov r8, 15
+    int 80h
+
     mov rsp, rbp
     pop rbp
     ret

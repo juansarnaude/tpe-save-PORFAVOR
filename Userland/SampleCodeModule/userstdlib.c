@@ -20,6 +20,7 @@ extern void sys_infoReg();
 extern void sys_paint(unsigned int fd, int direction, uint8_t* position);
 extern int sys_seconds_elapsed();
 extern int sys_miliseconds_elapsed();
+extern int sys_set_font(int fontNumber);
 
 void paint(unsigned int fd, int direction, uint8_t* position){
   sys_paint( fd,  direction, * position);
@@ -224,4 +225,8 @@ void sleepMiliseconds(int miliseconds){
 void sleep(int seconds){
    int seconds_e = seconds_elapsed();
     for (int i = seconds_elapsed(); i < seconds_e + seconds; i = seconds_elapsed());
+}
+
+void setFont(int fontNumber){
+  sys_set_font(fontNumber);
 }

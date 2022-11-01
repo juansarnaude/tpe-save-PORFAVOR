@@ -1,11 +1,10 @@
 // Created from bdf2c Version 3, (c) 2009, 2010 by Lutz Sammer
 //	License AGPLv3: GNU Affero General Public License version 3
 
-#include <fonts.h>
+#include <normalFont.h>
 #include <stdlib.h>
 	/// character bitmap for each encoding
-static const unsigned char pixel_chars[] = {
-
+static const unsigned char pixel_normal_chars[] = {
 	________,
 	________,
 	________,
@@ -3078,6 +3077,6 @@ static const unsigned char pixel_chars[] = {
 	__XXXX__,
 };
 
-uint8_t * getCharMapping(uint8_t c) {
-	return pixel_chars + CHAR_HEIGHT * (c-31);
+uint8_t * getCharMappingNormalFont(uint8_t c) {
+	return pixel_normal_chars + 14 * (c-31);
 }

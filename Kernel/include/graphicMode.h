@@ -59,6 +59,7 @@ typedef struct color_t{
 static color_t RED = {0xFF,0x00,0x00};
 static color_t WHITE = {0xFF,0xFF,0xFF};
 static color_t BLACK = {0x00,0x00,0x00};
+extern int global_font;
 
 void printChar(uint8_t c);
 void printCharFormat(uint8_t c, color_t * charColor, color_t * bgColor);

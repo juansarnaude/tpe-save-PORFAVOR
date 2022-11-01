@@ -19,8 +19,13 @@ static void help(void);
 static void time(void);
 static void print_mem(void);
 
+static void setSmallFont(void);
+static void setNormalFont(void);
+static void setBigFont(void);
+
 static command valid_commands[] = {{&help,"help"}, {&time,"time"}, {&play, "play"},
-         {&divideByZero, "dividezero"}, {&invalidOp, "invalidop"}, {&print_mem, "printmem"}, {&infoReg, "inforeg"}, {0,0}};
+         {&divideByZero, "dividezero"}, {&invalidOp, "invalidop"}, {&print_mem, "printmem"}, {&infoReg, "inforeg"}, {&setSmallFont,"setsmallfont"}, {&setNormalFont,"setnormalfont"},
+         {&setBigFont,"setbigfont"}, {0,0}};
 
 void welcome_message(void){
   my_printf("Bienvenido a Userland \n");
@@ -170,4 +175,16 @@ void time(void){
   char date[11];
   get_date(date);
   my_printf("\n Fecha: %s \n", date);
+}
+
+void setSmallFont(){
+  setFont(1);
+}
+
+void setNormalFont(){
+  setFont(2);
+}
+
+void setBigFont(){
+  setFont(3);
 }

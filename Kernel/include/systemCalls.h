@@ -25,5 +25,6 @@ void sys_infoReg();
 void sys_paint(unsigned int fd, int direction, uint8_t* position);
 int sys_seconds_elapsed();
 int sys_miliseconds_elapsed();
+void sys_set_font(int fontNumber);
 
 #endif /* SYSTEMCALLS_H_ */

@@ -139,6 +139,12 @@ int sys_seconds_elapsed(){
 int sys_miliseconds_elapsed(){
     return miliseconds_elapsed();
   }
+
+void sys_set_font(int fontNumber){
+    clearAll();
+    global_font = fontNumber;
+}
+
 // Note: r10 & r8 are used for screen id and syscall id respectively.
 int sysCallDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r10, uint64_t r8) {
   switch(r8){
@@ -192,7 +198,9 @@ int sysCallDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r10, ui
         return sys_seconds_elapsed();
       case 14:
         return sys_miliseconds_elapsed();
-
+      case 15:
+        sys_set_font((int) rdi);
+        return 0;
   }
   return -1;
 }

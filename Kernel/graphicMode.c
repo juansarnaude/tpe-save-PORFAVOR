@@ -1,10 +1,10 @@
 #include <graphicMode.h>
-#include <fonts.h>
+#include <smallFont.h>
+#include <normalFont.h>
+#include <bigFont.h>
 
 // cw = current window
 window cw[4];
-
-
 
 uint8_t cw_id = 0;              // current screen
 color_t * font_color = &WHITE;  // default font_color
@@ -12,12 +12,13 @@ color_t * bg_color = &BLACK;    // default bg_color
 
 static char buffer[64] = { '0' };
 static const struct vbe_mode_info_structure * graphicModeInfo = (struct vbe_mode_info_structure *) 0x5C00;
+int CHAR_HEIGHT = 16;
+int CHAR_WIDTH = 9;
+global_font = 2;
 
 static void getNextPosition();
 static void checkSpace();
 static void scrollUp();
-
-
 
 static uint8_t * getPixelAddress(int i, int j) {
     return (uint8_t *) (graphicModeInfo->framebuffer+3*(graphicModeInfo->width*i+j));
@@ -99,8 +100,28 @@ void printCharFormat(uint8_t c, color_t * charColor, color_t * bgColor){
         newLine();
         return;
     }
-
-    uint8_t * character = getCharMapping(c);
+    uint8_t * character;
+    if(global_font == 1){
+        character = getCharMappingSmallFont(c);
+        CHAR_HEIGHT = 11;
+        CHAR_WIDTH = 8;
+        cw[0].width = graphicModeInfo->width / CHAR_WIDTH;
+        cw[0].height = graphicModeInfo->height / CHAR_HEIGHT;
+    }
+    if(global_font == 2){
+        character = getCharMappingNormalFont(c);
+        CHAR_HEIGHT = 14;
+        CHAR_WIDTH = 8;
+        cw[0].width = graphicModeInfo->width / CHAR_WIDTH;
+        cw[0].height = graphicModeInfo->height / CHAR_HEIGHT;
+    }
+    if(global_font == 3){
+        character = getCharMappingBigFont(c);
+        CHAR_HEIGHT = 16;
+        CHAR_WIDTH = 9;
+        cw[0].width = graphicModeInfo->width / CHAR_WIDTH;
+        cw[0].height = graphicModeInfo->height / CHAR_HEIGHT;
+    }
     // Upper left pixel of the current character
     uint16_t write_i = (cw[cw_id].start_i + cw[cw_id].current_i) * CHAR_HEIGHT;
     uint16_t write_j = (cw[cw_id].start_j + cw[cw_id].current_j) * CHAR_WIDTH;

@@ -42,5 +42,6 @@ void uniqueWindow();
 void setScreen(uint8_t id);
 void infoReg();
 void paint(unsigned int fd, int direction, uint8_t* position);
+void setFont(int fontNumber);
 
 #endif /* _USERSTDLIB_H_*/
