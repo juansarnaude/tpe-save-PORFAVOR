@@ -18,8 +18,10 @@ static uint32_t playersPaintedPixels[AREA] = {0};//Array que nos sirve para guar
  */
 static uint32_t crash = 0;
 static uint32_t collisionState1= 0;
+static uint32_t wrongKey = 0;
 char lastLetter1 = 'd';
 char lastLetter2 = 'j';
+
 //80 * 12 = 960
 //960 * 2 = 1920
 //20 * 2 = 40
@@ -30,8 +32,9 @@ void play(unsigned int fd){
     clearScreen();
     char letter[1] = {0};
     int flag=1;
-    while(1){
+    while(flag){
         letter [0]=read_char();
+        wrongKey=0;
         if(letter[0] <= 0){
             drawMovement(lastLetter1,1);
             drawMovement(lastLetter2,2);
@@ -40,12 +43,14 @@ void play(unsigned int fd){
             if( letter[0]=='w' || letter[0]=='a' || letter[0]=='s' || letter[0]=='d'){
                 drawMovement(letter[0],1);
                 drawMovement(lastLetter2,2);
-                lastLetter1 = letter[0];
+                if (!wrongKey)
+                    lastLetter1 = letter[0];
             }
             else if( letter[0]=='j' || letter[0]=='k' || letter[0]=='l' || letter[0]=='i'){
                 drawMovement(lastLetter1,1);
                 drawMovement(letter[0],2);
-                lastLetter2 = letter[0];
+                if (!wrongKey)
+                    lastLetter2 = letter[0];
             }
             letter[0] = 0;
 
@@ -82,14 +87,24 @@ int endGame(){
     lastLetter2 = 'j';
     crash = 0;
     collisionState1= 0;
+    wrongKey=0;
 
     sleepMiliseconds(1000);
+    clearScreen();
+    restartCursor();
+
 }
 
 int drawMovement(char c, int player){
     int firstColumn = 0;
     int lastColumn=0;
+
+
     if(player==1) {
+        if ((lastLetter1=='a' && c=='d') || (lastLetter1=='w' && c=='s') || (lastLetter1=='s' && c=='w') || (lastLetter1=='d' && c=='a')){
+            c=lastLetter1;
+            wrongKey=1;
+        }
         if( currentPlayer1Pos % (WIDTH) == 0)
             firstColumn = 1;
         if( currentPlayer1Pos % (WIDTH) == 127)
@@ -117,6 +132,11 @@ int drawMovement(char c, int player){
         playersPaintedPixels[currentPlayer1Pos] = 1;
     }
     else{
+        if ((lastLetter2=='j' && c=='l') || (lastLetter2=='i' && c=='k') || (lastLetter2=='k' && c=='i') || (lastLetter2=='l' && c=='j')){
+            c=lastLetter2;
+            wrongKey=1;
+
+        }
         if( currentPlayer2Pos % (WIDTH) == 0)
             firstColumn = 1;
         if( currentPlayer2Pos % (WIDTH) == 127)
@@ -136,9 +156,6 @@ int drawMovement(char c, int player){
         else if(c=='k' || c=='K'){
             currentPlayer2Pos += 1 * WIDTH;
             paint(1,DOWN,currentPlayer2Pos);
-        }
-        if((( currentPlayer2Pos % (WIDTH) == 127) && firstColumn == 1 )|| ((currentPlayer2Pos % (WIDTH) == 0) && lastColumn == 1)){
-            crash+=2;
         }
         checkCollision(2);
         playersPaintedPixels[currentPlayer2Pos] = 1;
