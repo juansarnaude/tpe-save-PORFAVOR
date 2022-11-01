@@ -17,13 +17,13 @@ extern void sys_setScreen(uint8_t id);
 extern int  sys_printmem(uint64_t * mem_address);
 extern void sys_date(char * buffer);
 extern void sys_infoReg();
-extern void sys_paint(unsigned int fd, int direction, uint32_t position);
+extern void sys_paint(color_t color, uint32_t position);
 extern int sys_seconds_elapsed();
 extern int sys_miliseconds_elapsed();
 extern int sys_set_font(int fontNumber);
 
-void paint(unsigned int fd, int direction, uint32_t position){
-    sys_paint( fd,  direction, position);
+void paint(color_t color, uint32_t position){
+    sys_paint(color, position);
 }
 
 void infoReg(){

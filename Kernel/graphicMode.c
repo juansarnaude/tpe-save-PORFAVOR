@@ -81,12 +81,12 @@ void printCharFormatWithoutScroll(uint8_t c, color_t * charColor, color_t * bgCo
         if(cw[cw_id].current_j == 0){
             cw[cw_id].current_i -= 1;
             cw[cw_id].current_j = cw[cw_id].width-1;
-            printCharFormat(' ', charColor, bgColor);
+            printCharFormatWithoutScroll(c, charColor, bgColor);
             cw[cw_id].current_i -= 1;
             cw[cw_id].current_j = cw[cw_id].width-1;
         } else {
             cw[cw_id].current_j = (cw[cw_id].current_j-1) % cw[cw_id].width;
-            printCharFormat(' ', charColor, bgColor);
+            printCharFormatWithoutScroll(c, charColor, bgColor);
             cw[cw_id].current_j = (cw[cw_id].current_j-1) % cw[cw_id].width;
         }
         return;
@@ -258,8 +258,8 @@ void restartCursor(){
 void clearAll(){
     cw[cw_id].current_i = 0;
     cw[cw_id].current_j = 0;
-    for(int i=0; i < cw[cw_id].height ; ++i ){
-        for(int j=0; j < cw[cw_id].width ; ++j){
+    for(int i=0; i < (cw[cw_id].height) ; ++i ){
+        for(int j=0; j < (cw[cw_id].width) ; ++j){
             printCharFormat(' ', &WHITE, &BLACK);
         }
     }
@@ -335,9 +335,10 @@ void printRegisterFormat(uint64_t reg){
     }
 }
 
-c=' ';
-void paintPixel(int direction, uint32_t position){
+
+void paintPixel(color_t color, uint32_t position){
+    char c=' ';
     cw[cw_id].current_i = position / cw[cw_id].width;
     cw[cw_id].current_j = position % cw[cw_id].width;
-    printCharFormatWithoutScroll(c , &BLACK , &RED );
+    printCharFormatWithoutScroll(c , &BLACK , &color );
 }

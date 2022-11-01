@@ -121,6 +121,6 @@ static uint32_t uintToBase(uint64_t value, char * buffer, uint32_t base){
 	return digits;
 }
 
-void ncPaint(int direction, uint8_t* position){
-    paintPixel(direction,position);
+void ncPaint(uint8_t* color, uint32_t position){
+    paintPixel(color,position);
 }

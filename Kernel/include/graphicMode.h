@@ -2,6 +2,7 @@
 #define _GRAPHICMODE_H_
 
 #include <stdint.h>
+#include <colors.h>
 
 typedef struct window{
     uint8_t current_i; 				// current pixel
@@ -50,15 +51,7 @@ struct vbe_mode_info_structure {
 	uint8_t reserved1[206];
 } __attribute__ ((packed));
 
-typedef struct color_t{
-    uint8_t R;
-    uint8_t G;
-    uint8_t B;
-}color_t;
 
-static color_t RED = {0xFF,0x00,0x00};
-static color_t WHITE = {0xFF,0xFF,0xFF};
-static color_t BLACK = {0x00,0x00,0x00};
 extern int global_font;
 
 void printChar(uint8_t c);
@@ -77,6 +70,6 @@ void restartCursor();
 void setScreen(uint8_t screen_id);
 void clearAll();
 void newLine();
-void paintPixel(int direction, uint32_t position);
+void paintPixel(color_t color, uint32_t position);
 void printCharFormatWithoutScroll(uint8_t c, color_t * charColor, color_t * bgColor);
 #endif /* _GRAPHICMODE_H_ */

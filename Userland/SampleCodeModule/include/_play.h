@@ -1,32 +1,27 @@
 #ifndef PLAY_H
 #define PLAY_H
 
+#include <stdint.h>
+
 #define DOWN    0
 #define UP      1
 #define LEFT    2
 #define RIGHT   3
 
-typedef int color;
+typedef struct color_t{
+    uint8_t R;
+    uint8_t G;
+    uint8_t B;
+}color_t;
 
-#define BLACK 0x0
-#define BLUE 0x1
-#define GREEN 0x2
-#define CYAN 0x3
-#define RED 0x4
-#define MAGENTA 0x5
-#define BROWN 0x6
-#define L_GRAY 0x7
-#define GRAY 0x8
-#define L_BLUE 0x9
-#define L_GREEN 0xA
-#define L_CYAN 0xB
-#define L_RED 0xC
-#define L_MAGENTA 0xD
-#define YELLOW 0xE
-#define WHITE 0xF
+static color_t RED = {0xFF,0x00,0x00};
+static color_t WHITE = {0xFF,0xFF,0xFF};
+static color_t BLACK = {0x00,0x00,0x00};
+static color_t BLUE = {0x00,0x00,0xFF};
+
 
 #define WIDTH 128
-#define HEIGHT 54
+#define HEIGHT 55
 #define AREA WIDTH*HEIGHT
 
 void play(unsigned int fd);

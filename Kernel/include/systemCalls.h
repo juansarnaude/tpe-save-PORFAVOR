@@ -4,6 +4,7 @@
 
 #include <stdint.h>
 
+
 #define STDIN  0
 #define STDOUT 1
 #define STDERR 2
@@ -22,7 +23,7 @@ int sys_printmem(uint64_t * mem_address);
 void sys_setScreen(uint8_t id);
 void store_registers(uint64_t * start);
 void sys_infoReg();
-void sys_paint(unsigned int fd, int direction, uint32_t position);
+void sys_paint(uint8_t* color, uint32_t position);
 int sys_seconds_elapsed();
 int sys_miliseconds_elapsed();
 void sys_set_font(int fontNumber);

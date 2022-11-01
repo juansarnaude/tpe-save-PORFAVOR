@@ -2,8 +2,8 @@
 #include <userstdlib.h>
 
 
-#define STARTING_PLAYER1    10
-#define STARTING_PLAYER2    502
+#define STARTING_PLAYER1    3352
+#define STARTING_PLAYER2    3432
 
 
 static uint32_t currentPlayer1Pos = STARTING_PLAYER1; // cambiarlo
@@ -59,22 +59,22 @@ void play(unsigned int fd){
             endGame();
             flag=0;
         }
-        sleepMiliseconds(65);
+        sleepMiliseconds(55);
     }
 }
 
 int endGame(){
     clearScreen();
     if(crash==1){
-        char str[12] = "Gano el azul";
+        char str[13] = "Gano el azul";
         sprint(STDOUT,str);
     }
     else if(crash==2){
-        char str[12] = "Gano el rojo";
+        char str[13] = "Gano el rojo";
         sprint(STDOUT,str);
     }
     else {
-        char str[6] = "Empate";
+        char str[7] = "Empate";
         sprint(STDOUT,str);
     }
 
@@ -88,7 +88,8 @@ int endGame(){
     crash = 0;
     collisionState1= 0;
     wrongKey=0;
-
+    for (int i=HEIGHT;i<AREA;i++)
+        paint(BLACK,i);
     sleepMiliseconds(1000);
     clearScreen();
     restartCursor();
@@ -99,8 +100,8 @@ int drawMovement(char c, int player){
     int firstColumn = 0;
     int lastColumn=0;
 
-
     if(player==1) {
+        color_t color=RED;
         if ((lastLetter1=='a' && c=='d') || (lastLetter1=='w' && c=='s') || (lastLetter1=='s' && c=='w') || (lastLetter1=='d' && c=='a')){
             c=lastLetter1;
             wrongKey=1;
@@ -111,19 +112,19 @@ int drawMovement(char c, int player){
             lastColumn = 1;
         if(c=='d' || c=='D'){
             currentPlayer1Pos += 1;
-            paint(1,RIGHT,currentPlayer1Pos);
+            paint(color,currentPlayer1Pos);
         }
         else if(c=='a' || c=='A'){
             currentPlayer1Pos -= 1;
-            paint(1,LEFT,currentPlayer1Pos);
+            paint(color,currentPlayer1Pos);
         }
         else if(c=='w' || c=='W'){
             currentPlayer1Pos -= 1 * WIDTH;
-            paint(1,UP,currentPlayer1Pos);
+            paint(color,currentPlayer1Pos);
         }
         else if(c=='s' || c=='S'){
             currentPlayer1Pos += 1 * WIDTH;
-            paint(1,DOWN,currentPlayer1Pos);
+            paint(color,currentPlayer1Pos);
         }
         if((( currentPlayer1Pos % (WIDTH) == 127) && firstColumn == 1 )|| ((currentPlayer1Pos % (WIDTH) == 0) && lastColumn == 1)){
             crash+=1;
@@ -132,6 +133,7 @@ int drawMovement(char c, int player){
         playersPaintedPixels[currentPlayer1Pos] = 1;
     }
     else{
+        color_t color=BLUE;
         if ((lastLetter2=='j' && c=='l') || (lastLetter2=='i' && c=='k') || (lastLetter2=='k' && c=='i') || (lastLetter2=='l' && c=='j')){
             c=lastLetter2;
             wrongKey=1;
@@ -143,19 +145,19 @@ int drawMovement(char c, int player){
             lastColumn = 1;
         if(c=='l' || c=='L'){
             currentPlayer2Pos += 1;
-            paint(1,RIGHT,currentPlayer2Pos);
+            paint(color,currentPlayer2Pos);
         }
         else if(c=='j' || c=='J'){
             currentPlayer2Pos -= 1;
-            paint(1,LEFT,currentPlayer2Pos);
+            paint(color,currentPlayer2Pos);
         }
         else if(c=='i' || c=='I'){
             currentPlayer2Pos -= 1 * WIDTH;
-            paint(1,UP,currentPlayer2Pos);
+            paint(color,currentPlayer2Pos);
         }
         else if(c=='k' || c=='K'){
             currentPlayer2Pos += 1 * WIDTH;
-            paint(1,DOWN,currentPlayer2Pos);
+            paint(color,currentPlayer2Pos);
         }
         checkCollision(2);
         playersPaintedPixels[currentPlayer2Pos] = 1;
@@ -172,6 +174,8 @@ int checkCollision(int player){
     }
     if(player==2){
         if(playersPaintedPixels[currentPlayer2Pos]==1  || AREA<currentPlayer2Pos|| 0==currentPlayer2Pos%WIDTH){
+            if(!collisionState1)
+                drawMovement(lastLetter1,1);
             crash += 2;
             return 2;
         }

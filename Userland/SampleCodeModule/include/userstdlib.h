@@ -2,10 +2,13 @@
 #define _USERSTDLIB_H_
 
 #include <stdint.h>
+#include <_play.h>
 
 #define STDIN 0
 #define STDOUT 1
 #define STDERR 2
+
+
 
 // stdio.h
 int sprint(uint8_t fd, char * str);
@@ -41,7 +44,7 @@ void divideWindow();
 void uniqueWindow();
 void setScreen(uint8_t id);
 void infoReg();
-void paint(unsigned int fd, int direction, uint32_t position);
+void paint(color_t color, uint32_t position);
 void setFont(int fontNumber);
 
 #endif /* _USERSTDLIB_H_*/
