@@ -19,3 +19,6 @@
 .bash_history
 .gdb_history
 .gdbinit
+.idea/workspace.xml
+a-compiletpe
+Kernel/kernel.elf
